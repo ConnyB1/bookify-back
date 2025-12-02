@@ -30,10 +30,15 @@ import { GeneroModule } from './genero/genero.module';
         port: +configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
+        database: configService.get('DB_DATABASE') || configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false, // Usamos init.sql en su lugar
-        logging: true,
+        logging: false, // Desactivar logging en producción
+        connectTimeoutMS: 10000,
+        extra: {
+          max: 10,
+          connectionTimeoutMillis: 10000,
+        },
       }),
       inject: [ConfigService],
     }),

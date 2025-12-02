@@ -2,7 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log'],
+  });
   
   // Habilitar CORS para el frontend
   app.enableCors({
@@ -25,9 +27,10 @@ async function bootstrap() {
   
   await app.listen(port, host);
   
-  console.log(`🚀 Backend running on:`);
-  console.log(`   - Local:   http://127.0.0.1:${port}`);
-  console.log(`   - Network: http://${host}:${port}`);
-  console.log(`📁 Image upload endpoint: http://${host}:${port}/api/images/upload/book`);
+  console.log(`🚀 Server is running on port ${port}`);
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
+});
