@@ -1,0 +1,9 @@
+node_modules
+test
+coverage
+.git
+.gitignore
+README.md
+*.spec.ts
+*.e2e-spec.ts
+src
