@@ -83,6 +83,62 @@ $ npm run test:cov
 
 ## Deployment
 
+### Deploy en Render
+
+#### Opción 1: Deploy desde GitHub (Recomendado)
+
+1. **Conecta tu repositorio en Render**:
+   - Ve a [Render Dashboard](https://dashboard.render.com/)
+   - Click en "New +" → "Web Service"
+   - Conecta tu repositorio de GitHub
+   - Render detectará automáticamente el `render.yaml`
+
+2. **Configura las variables de entorno**:
+   En el dashboard de Render, ve a Environment y agrega:
+   ```
+   DB_HOST=tu-host-postgresql
+   DB_PORT=5432
+   DB_USERNAME=tu-usuario
+   DB_PASSWORD=tu-contraseña
+   DB_DATABASE=nombre-base-datos
+   
+   AWS_REGION=us-east-1
+   AWS_ACCESS_KEY_ID=tu-access-key
+   AWS_SECRET_ACCESS_KEY=tu-secret-key
+   AWS_S3_BUCKET_NAME=tu-bucket
+   
+   AWS_COGNITO_USER_POOL_ID=tu-pool-id
+   AWS_COGNITO_CLIENT_ID=tu-client-id
+   AWS_COGNITO_REGION=us-east-1
+   ```
+
+3. **Deploy**:
+   - Render construirá y desplegará automáticamente tu aplicación
+   - La URL será: `https://bookify-back.onrender.com`
+
+#### Opción 2: Deploy con Docker
+
+1. **Build la imagen**:
+```bash
+docker build -t bookify-back .
+```
+
+2. **Ejecuta localmente para probar**:
+```bash
+docker run -p 3000:3000 --env-file .env bookify-back
+```
+
+3. **Deploy en Render**:
+   - Sube tu imagen a Docker Hub o GitHub Container Registry
+   - En Render, selecciona "Deploy from Docker"
+
+#### Crear PostgreSQL en Render
+
+1. En Render Dashboard, click "New +" → "PostgreSQL"
+2. Crea una nueva base de datos
+3. Copia las credenciales generadas
+4. Úsalas en las variables de entorno de tu Web Service
+
 ### Deploy en Vercel
 
 1. **Instala Vercel CLI**:
@@ -100,20 +156,14 @@ npm install -g vercel
 vercel --prod
 ```
 
-**Importante**: Asegúrate de tener una base de datos PostgreSQL accesible desde internet (como AWS RDS, Supabase, etc.)
-
 ### Configuración de la Base de Datos
 
 Para producción, se recomienda usar:
+- **Render PostgreSQL** (recomendado para Render)
 - AWS RDS PostgreSQL
 - Supabase
 - Neon
 - Railway
-- Render PostgreSQL
-
-### Variables de Entorno Requeridas en Vercel
-
-Todas las variables definidas en `.env.example` deben configurarse en Vercel Dashboard.
 
 ## Resources
 
